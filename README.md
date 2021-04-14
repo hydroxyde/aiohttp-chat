@@ -26,7 +26,11 @@ $ python main.py
 
 Open link with browser
 
+# How to use
+After running main.py you can access the chat on your browser. Default host adress is 0.0.0.0:8080
+
+Open multiple tabs for simulating multiple users.
 
 # Requirements
-- [iaohttp](https://github.com/aio-libs/aiohttp)
-- [iaohttp_jinja2](aiohttp_jinja2)
+- [aiohttp](https://github.com/aio-libs/aiohttp)
+- [aiohttp_jinja2](aiohttp_jinja2)

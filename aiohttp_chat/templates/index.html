@@ -1,194 +1,198 @@
-
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-        <title>Chating Toy project</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-         <!-- Bootstrap CSS CDN -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <!-- Custom CSS -->
-        <link rel="stylesheet" href="/static/main.css">
-    </head>
-    <body>
+  <title>Chating Toy project</title>
+
+  <!-- Bootstrap CSS CDN -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/static/main.css">
+</head>
+
+<body>
 
 
 
-        <div class="wrapper">
-            <!-- Sidebar Holder -->
-            <nav id="sidebar">
-                <div class="sidebar-header">
-                    <h3>Menu</h3>
-                </div>
+  <div class="wrapper">
+    <!-- Sidebar Holder -->
+    <nav id="sidebar" class="active">
+      <div class="sidebar-header">
+        <h3>Menu</h3>
+      </div>
 
-                <ul class="list-unstyled components">
-                    <p>Channel 1</p>
-                    <li class="active">
-                        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Channels</a>
-                        <ul class="collapse list-unstyled" id="homeSubmenu">
-                            <li><a href="#">Channel 1</a></li>
-                            <li><a href="#">Channel 2</a></li>
-                            <li><a href="#">Channel 3</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#">About</a>
-                        
-                    </li>
-                    
-                    <li>
-                        <a href="#">Contact</a>
-                    </li>
-                </ul>
+      <ul class="list-unstyled components">
+        <p>Channel 1</p>
+        <li class="active">
+          <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Channels</a>
+          <ul class="collapse list-unstyled" id="homeSubmenu">
+            <li><a href="#">Channel 1</a></li>
+            <li><a href="#">Channel 2</a></li>
+            <li><a href="#">Channel 3</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">About</a>
 
-            </nav>
+        </li>
 
-            <!-- Page Content Holder -->
-            <div id="content">
+        <li>
+          <a href="#">Contact</a>
+        </li>
+      </ul>
 
-                <nav class="navbar navbar-default">
-                    <div class="container-fluid">
+    </nav>
 
-                        <div class="navbar-header">
-                            <button type="button" id="sidebarCollapse" class="navbar-btn">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </button>
-                        </div>
+    <!-- Page Content Holder -->
+    <div id="content">
 
-                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                            
-                        </div>
-                    </div>
-                </nav>
-                <div class="mx-sm-8 mb-8">
-                  
-                  <button id="connect" type="button" class="btn btn-primary">Connect</button>&nbsp;|&nbsp;Status:
-                  <span id="name"></span>
-                  <span id="status" style="color:#ff6666">disconnected</span>
-              </div>
-              <div id="log" class="mx-sm-8 mb-8"
-                  style="height:15em;overflow:auto;border:1px solid grey; margin-top:2rem">
-              </div>
-              <form  class="form-inline" style="margin-top:1rem;" id="chatform" onsubmit="return false;">
-              <input class="form-group mx-sm-8 mb-8" id="text" type="text" />
-              <input id="send" class="btn btn-primary mb-2" type="button" value="Send" disabled/>
-              </form>
-        </div>
-                </div>
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+
+          <div class="navbar-header">
+            <button type="button" id="sidebarCollapse" class="navbar-btn active">
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+          </div>
+
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+          </div>
         </div>
 
+        <div>
+
+          <button id="connect" type="button" class="btn btn-primary">Connect</button>&nbsp;|&nbsp;Status:
+          <span id="name"></span>
+          <span id="status" style="color:#ff6666">disconnected</span>
+        </div>
+        <div id="log">
+        </div>
+        <form class="form-inline" id="chatform" onsubmit="return false;">
+          <textarea class="form-group" id="text" type="text" ></textarea>
+          <input id="send" class="btn btn-primary" type="button" value="Send" disabled />
+        </form>
+    </div>
+  </nav>
+  </div>
+  </div>
 
 
 
 
-        <!-- jQuery CDN -->
-         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-         <!-- Bootstrap Js CDN -->
-         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-         <script type="text/javascript">
-             $(document).ready(function () {
-                 $('#sidebarCollapse').on('click', function () {
-                     $('#sidebar').toggleClass('active');
-                     $(this).toggleClass('active');
-                 });
-             });
-             $(function() {
-       var conn = null;
-       var name = "";
-       function log(msg) {
-         var control = $('#log');
-         var date = new Date().toLocaleString("ko-KR", {timeZone: "Asia/Seoul"});
-         var date_prompt = '(' + date + ') ';
-         control.html(control.html() + date_prompt + msg + '<br/>');
-         control.scrollTop(control.scrollTop() + 1000);
-       }
-       function connect() {
-         disconnect();
-         var wsUri = (window.location.protocol=='https:'&&'wss://'||'ws://')+window.location.host;
-         conn = new WebSocket(wsUri);
-         //log('Connecting...');
-         conn.onopen = function() {
-           //log('Connected.');
-           update_ui();
-         };
-         conn.onmessage = function(e) {
-           var data = JSON.parse(e.data);
-           switch (data.action) {
-             case  'connect':
-               name = data.name;
-               log('Connected as ' + name);
-               update_ui();
-               break;
-             case  'disconnect':
-               name = data.name;
-               log('Disconnected ' + name);
-               update_ui();
-               break;
-             case 'join':
-               log('Joined ' + data.name);
-               break;
-             case 'sent':
-               log(data.name + ': ' + data.text);
-               break;
-           }
-         };
-         conn.onclose = function() {
-           log('Disconnected.');
-           conn = null;
-           update_ui();
-         };
-       }
-       function disconnect() {
-         if (conn != null) {
-           //log('Disconnecting...');
-           conn.close();
-           conn = null;
-           name = this.name;
-           update_ui();
-         }
-       }
-       function update_ui() {
-         if (conn == null) {
-           $('#status').text('disconnected').css('color', "#ff6666");
-           $('#connect').html('Connect');
-           $('#send').prop("disabled", true);
-         } else {
-           $('#status').text('connected').css('color', "#009933");
-           $('#connect').html('Disconnect');
-           $('#send').prop("disabled", false);
-         }
-         $('#name').text(name);
-       }
-       $('#connect').on('click', function() {
-         if (conn == null) {
-           connect();
-         } else {
-           disconnect();
-         }
-         update_ui();
-         return false;
-       });
-       $('#send').on('click', function() {
-         var text = $('#text').val();
-         // log('Sending: ' + text);
-         log(text);
-         conn.send(text);
-         $('#text').val('').focus();
-         return false;
-       });
-       $('#text').on('keyup', function(e) {
-         if (e.keyCode === 13) {
-           $('#send').click();
-           return false;
-         }
-       });
-     });
-         </script>
-    </body>
+  <!-- jQuery CDN -->
+  <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+  <!-- Bootstrap Js CDN -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      // $('#sidebar').toggleClass('active');
+      // $('#sidebarCollapse').toggleClass('active');
+      $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+        $(this).toggleClass('active');
+      });
+    });
+    $(function () {
+      var conn = null;
+      var name = "";
+      function log(msg) {
+        var control = $('#log');
+        var date = new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul" });
+        var date_prompt = '(' + date + ') ';
+        control.html(control.html() + date_prompt + msg + '<br/>');
+        control.scrollTop(control.scrollTop() + 1000);
+      }
+      function connect() {
+        disconnect();
+        var wsUri = (window.location.protocol == 'https:' && 'wss://' || 'ws://') + window.location.host;
+        conn = new WebSocket(wsUri);
+        //log('Connecting...');
+        conn.onopen = function () {
+          //log('Connected.');
+          update_ui();
+        };
+        conn.onmessage = function (e) {
+          var data = JSON.parse(e.data);
+          switch (data.action) {
+            case 'connect':
+              name = data.name;
+              log('Connected as ' + name);
+              update_ui();
+              break;
+            case 'disconnect':
+              name = data.name;
+              log('Disconnected ' + name);
+              update_ui();
+              break;
+            case 'join':
+              log('Joined ' + data.name);
+              break;
+            case 'sent':
+              log(data.name + ': ' + data.text);
+              break;
+          }
+        };
+        conn.onclose = function () {
+          log('Disconnected.');
+          conn = null;
+          update_ui();
+        };
+      }
+      function disconnect() {
+        if (conn != null) {
+          //log('Disconnecting...');
+          conn.close();
+          conn = null;
+          name = this.name;
+          update_ui();
+        }
+      }
+      function update_ui() {
+        if (conn == null) {
+          $('#status').text('disconnected').css('color', "#ff6666");
+          $('#connect').html('Connect');
+          $('#send').prop("disabled", true);
+        } else {
+          $('#status').text('connected').css('color', "#009933");
+          $('#connect').html('Disconnect');
+          $('#send').prop("disabled", false);
+        }
+        $('#name').text(name);
+      }
+      $('#connect').on('click', function () {
+        if (conn == null) {
+          connect();
+        } else {
+          disconnect();
+        }
+        update_ui();
+        return false;
+      });
+      $('#send').on('click', function () {
+        var text = $('#text').val();
+        // log('Sending: ' + text);
+        log(text);
+        conn.send(text);
+        $('#text').val('').focus();
+        return false;
+      });
+      $('#text').on('keyup', function (e) {
+        if (e.keyCode === 13) {
+          $('#send').click();
+          return false;
+        }
+      });
+    });
+  </script>
+</body>
+
 </html>
