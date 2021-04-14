@@ -1,2 +1,3 @@
 config
 aiohttp_chat/__pycache__
+.vscode

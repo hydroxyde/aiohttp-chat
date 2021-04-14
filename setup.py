@@ -18,8 +18,8 @@ def read_version():
             raise RuntimeError(msg)
 
 
-install_requires = ['aiohttp',
-                    'aiohttp_jinja2',
+install_requires = ['aiohttp==3.7.4.post0',
+                    'aiohttp_jinja2==1.4.2',
                     'faker']
 
 setup(name='aiohttp_chat',
