@@ -9,8 +9,8 @@ multi-user single-room realtime webchat
 Clone repo and install library:
 
 ```
-$ git clone git@github.com:hydroxyde/toyproject.git
-$ cd toyproject
+$ git clone git@github.com:hydroxyde/aiohttp-chat.git
+$ cd aiohttp-chat
 ```
 
 Install the app:
@@ -33,4 +33,4 @@ Open multiple tabs for simulating multiple users.
 
 # Requirements
 - [aiohttp](https://github.com/aio-libs/aiohttp)
-- [aiohttp_jinja2](aiohttp_jinja2)
+- [aiohttp_jinja2](https://github.com/aio-libs/aiohttp-jinja2)
